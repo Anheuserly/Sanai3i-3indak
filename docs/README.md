@@ -17,6 +17,7 @@
 | **مخطط قاعدة البيانات** | [`03_DATABASE_SCHEMA_POSTGRESQL.md`](./03_DATABASE_SCHEMA_POSTGRESQL.md) | مخطط PostgreSQL المتكامل، الجداول الـ 11، وقيود الحالات المنضبطة. |
 | **لوحات التحكم والتنقل** | [`04_NAVIGATION_AND_ROLE_DASHBOARDS.md`](./04_NAVIGATION_AND_ROLE_DASHBOARDS.md) | تجربة الزبون، تجربة الصنايعي، لوحة الأدمن، ولوحة المالك الحصرية. |
 | **خطة التنفيذ خطوة بخطوة** | [`05_IMPLEMENTATION_STEP_BY_STEP_PLAN.md`](./05_IMPLEMENTATION_STEP_BY_STEP_PLAN.md) | خطوات بناء تطبيق الويب المتسلسلة والمطالبات التنفيذية. |
+| **السياسات القانونية والشروط والخصوصية** | [`06_LEGAL_POLICIES_AND_TERMS.md`](./06_LEGAL_POLICIES_AND_TERMS.md) | الشروط والأحكام، سياسة الخصوصية، إخلاء المسؤولية المالي، وميثاق شرف الحرفيين. |
 
 ---
 

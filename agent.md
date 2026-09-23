@@ -62,3 +62,16 @@
 * [`docs/03_DATABASE_SCHEMA_POSTGRESQL.md`](./docs/03_DATABASE_SCHEMA_POSTGRESQL.md) — مخطط قاعدة البيانات والجداول الـ 11.
 * [`docs/04_NAVIGATION_AND_ROLE_DASHBOARDS.md`](./docs/04_NAVIGATION_AND_ROLE_DASHBOARDS.md) — خرائط الشاشات ولوحات التحكم للأدوار الـ 4.
 * [`docs/05_IMPLEMENTATION_STEP_BY_STEP_PLAN.md`](./docs/05_IMPLEMENTATION_STEP_BY_STEP_PLAN.md) — خطة التنفيذ خطوة بخطوة.
+* [`docs/06_LEGAL_POLICIES_AND_TERMS.md`](./docs/06_LEGAL_POLICIES_AND_TERMS.md) — السياسات القانونية، الشروط، سياسة الخصوصية، وميثاق شرف الحرفيين.
+
+---
+
+## 5. الصفحات والمسارات المعتمدة في تطبيق الويب (App Routes)
+
+* `/` — الصفحة الرئيسية التفاعلية (تبديل الأدوار الـ 4، المهن الـ 19، لوحات الشرف، وتتبع الطلبات).
+* `/terms` — الشروط والأحكام الرسمية الحاكمة للاستخدام في نابلس.
+* `/privacy` — سياسة الخصوصية وحماية بيانات المستخدمين وعدم مشاركتها.
+* `/disclaimer` — إخلاء المسؤولية المالي والتأكيد على الدفع النقدي 100% يداً بيد.
+* `/charter` — ميثاق شرف الحرفيين ومعايير الجودة والأركان الستة.
+* `/faq` — مركز المساعدة والأسئلة الشائعة وقنوات الدعم المباشرة في نابلس.
+

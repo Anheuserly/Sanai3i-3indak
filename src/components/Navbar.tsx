@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useApp, UserRole } from "@/context/AppContext";
-import { Wrench, MapPin, Shield, User, HardHat, Crown, Bell } from "lucide-react";
+import { Wrench, MapPin, Shield, User, HardHat, Crown, Bell, HelpCircle } from "lucide-react";
 
 export const Navbar: React.FC = () => {
   const { currentRole, setCurrentRole, openResponsibilityModal } = useApp();
@@ -59,8 +59,15 @@ export const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* Header Action Button */}
+          {/* Header Action Button & Links */}
           <div className="flex items-center gap-3">
+            <Link
+              href="/faq"
+              className="hidden lg:flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-primary px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors"
+            >
+              <HelpCircle className="w-4 h-4 text-primary" />
+              <span>الأسئلة والمساعدة</span>
+            </Link>
             <button
               onClick={openResponsibilityModal}
               className="bg-accent hover:bg-accent-dark text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm shadow-sm transition-all hover:scale-105 flex items-center gap-2"
