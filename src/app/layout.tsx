@@ -5,6 +5,8 @@ import { AppProvider } from "@/context/AppContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ResponsibilityModal } from "@/components/ResponsibilityModal";
+import { DownloadApkModal } from "@/components/DownloadApkModal";
+import { StaffLoginModal } from "@/components/StaffLoginModal";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -35,6 +37,8 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <ResponsibilityModal />
+          <DownloadApkModal />
+          <StaffLoginModal />
         </AppProvider>
       </body>
     </html>

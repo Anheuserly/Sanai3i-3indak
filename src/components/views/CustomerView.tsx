@@ -6,10 +6,10 @@ import { CategoryGrid } from "@/components/CategoryGrid";
 import { LeaderboardWorkers } from "@/components/LeaderboardWorkers";
 import { LeaderboardCustomers } from "@/components/LeaderboardCustomers";
 import { TrackingTimeline } from "@/components/TrackingTimeline";
-import { Search, MapPin, Wrench, Shield, AlertCircle, ArrowLeft } from "lucide-react";
+import { Search, MapPin, Wrench, Shield, AlertCircle, ArrowLeft, Smartphone } from "lucide-react";
 
 export const CustomerView: React.FC = () => {
-  const { openResponsibilityModal, setSelectedCategory } = useApp();
+  const { openResponsibilityModal, setSelectedCategory, openDownloadModal } = useApp();
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleHeroSearch = (e: React.FormEvent) => {
@@ -65,25 +65,74 @@ export const CustomerView: React.FC = () => {
               </div>
             </form>
 
-            {/* Free Service Guarantee Badge */}
-            <div className="flex flex-wrap items-center justify-center gap-6 pt-2 text-xs font-bold text-slate-500">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>الطلب مجاني 100% للزبائن</span>
+            {/* Free Service Guarantee Badge & APK CTA */}
+            <div className="flex flex-col items-center gap-4 pt-2">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-bold text-slate-500">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span>الطلب مجاني 100% للزبائن</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                  <span>فنيون معتمدون ومفحوصون</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                  <span>دفع نقدي مباشر بعد الإنجاز</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                <span>فنيون معتمدون ومفحوصون</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                <span>دفع نقدي مباشر بعد الإنجاز</span>
+
+              {/* Direct APK Download Quick Action */}
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={openDownloadModal}
+                  className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-2 border-emerald-300 font-black px-6 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-xs transition-all hover:scale-105"
+                >
+                  <Smartphone className="w-4 h-4 text-emerald-600" />
+                  <span>تثبيت التطبيق على هاتفك — تحميل ملف APK المباشر</span>
+                  <span className="bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">مجاني</span>
+                </button>
               </div>
             </div>
 
           </div>
         </div>
       </section>
+
+      {/* Direct APK Download Feature Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-r from-slate-900 via-primary to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-slate-800">
+          <div className="flex items-center gap-4 text-center md:text-right">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
+              <Smartphone className="w-7 h-7" />
+            </div>
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1 text-[11px] font-black text-accent">
+                <span>⚡ تثبيت مباشر بدون متجر</span>
+                <span>•</span>
+                <span>أندرويد 8.0+</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black">
+                حمل تطبيق «صنايعي عندك» APK لهواتف الأندرويد
+              </h3>
+              <p className="text-slate-300 text-xs sm:text-sm max-w-xl">
+                تنزيل مباشر لحزمة التطبيق الرسمية (~18.5 MB) دون الحاجة لمتجر Google Play. سريع وخفيف ومخصص لأهل نابلس.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={openDownloadModal}
+              className="bg-accent hover:bg-accent-dark text-slate-950 font-black px-6 py-3.5 rounded-2xl text-xs sm:text-sm transition-all whitespace-nowrap shadow-lg shadow-accent/20 flex items-center gap-2 hover:scale-105"
+            >
+              <span>تحميل ملف APK الآن</span>
+              <span>↓</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Banner for Worker Application */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

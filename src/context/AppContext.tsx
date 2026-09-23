@@ -27,6 +27,12 @@ interface AppContextType {
   isResponsibilityModalOpen: boolean;
   openResponsibilityModal: () => void;
   closeResponsibilityModal: () => void;
+  isDownloadModalOpen: boolean;
+  openDownloadModal: () => void;
+  closeDownloadModal: () => void;
+  isStaffModalOpen: boolean;
+  openStaffModal: () => void;
+  closeStaffModal: () => void;
   selectedCategory: string;
   setSelectedCategory: (cat: string) => void;
   submitNewRequest: (cat: string, desc: string, area: string) => void;
@@ -42,6 +48,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [activeStatusIndex, setActiveStatusIndex] = useState<number>(2); // 'worker_on_way'
   const [isResponsibilityModalOpen, setIsResponsibilityModalOpen] =
     useState<boolean>(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
+  const [isStaffModalOpen, setIsStaffModalOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("سبّاك");
   const [workersList] = useState<Worker[]>(TOP_WORKERS);
 
@@ -179,6 +187,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const openResponsibilityModal = () => setIsResponsibilityModalOpen(true);
   const closeResponsibilityModal = () => setIsResponsibilityModalOpen(false);
 
+  const openDownloadModal = () => setIsDownloadModalOpen(true);
+  const closeDownloadModal = () => setIsDownloadModalOpen(false);
+
+  const openStaffModal = () => setIsStaffModalOpen(true);
+  const closeStaffModal = () => setIsStaffModalOpen(false);
+
   const submitNewRequest = (cat: string, desc: string, area: string) => {
     setActiveStatusIndex(0); // 'pending'
     closeResponsibilityModal();
@@ -202,6 +216,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         isResponsibilityModalOpen,
         openResponsibilityModal,
         closeResponsibilityModal,
+        isDownloadModalOpen,
+        openDownloadModal,
+        closeDownloadModal,
+        isStaffModalOpen,
+        openStaffModal,
+        closeStaffModal,
         selectedCategory,
         setSelectedCategory,
         submitNewRequest,
