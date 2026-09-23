@@ -9,11 +9,8 @@ import {
   WorkerApplication,
   FakeReport,
   AuditLog,
-  CATEGORIES_19,
-  TOP_WORKERS,
-  TOP_CUSTOMERS,
   NABLUS_AREAS,
-} from "@/data/mockData";
+} from "@/types";
 import * as api from "@/lib/api";
 
 export type UserRole = "customer" | "worker" | "admin" | "owner_admin";
@@ -65,10 +62,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isStaffModalOpen, setIsStaffModalOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("سبّاك ومواسرجي");
 
-  // Real Database State (with fallback defaults)
-  const [categories, setCategories] = useState<Category[]>(CATEGORIES_19);
-  const [workersList, setWorkersList] = useState<Worker[]>(TOP_WORKERS);
-  const [topCustomers, setTopCustomers] = useState<TopCustomer[]>(TOP_CUSTOMERS);
+  // Real Database State (starts clean/empty, loaded live from DB)
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [workersList, setWorkersList] = useState<Worker[]>([]);
+  const [topCustomers, setTopCustomers] = useState<TopCustomer[]>([]);
   const [orders, setOrders] = useState<ServiceRequest[]>([]);
   const [workerApplications, setWorkerApplications] = useState<WorkerApplication[]>([]);
   const [fakeReports, setFakeReports] = useState<FakeReport[]>([]);
@@ -104,18 +101,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       if (catsRes && catsRes.length > 0) {
         setCategories(catsRes);
         if (catsRes[0]) setSelectedCategory(catsRes[0].name);
+      } else if (catsRes) {
+        setCategories([]);
       }
-      if (workersRes && workersRes.length > 0) setWorkersList(workersRes);
-      if (custRes && custRes.length > 0) setTopCustomers(custRes);
-      if (ordersRes) setOrders(ordersRes);
-      if (appsRes) setWorkerApplications(appsRes);
-      if (reportsRes) setFakeReports(reportsRes);
-      if (logsRes) setAuditLogs(logsRes);
+      setWorkersList(workersRes || []);
+      setTopCustomers(custRes || []);
+      setOrders(ordersRes || []);
+      setWorkerApplications(appsRes || []);
+      setFakeReports(reportsRes || []);
+      setAuditLogs(logsRes || []);
       if (areasRes && areasRes.length > 0) setAreas(areasRes);
 
       setIsOffline(false);
     } catch (err) {
-      console.warn('[AppContext] Could not connect to local server, using local cache:', err);
+      console.warn('[AppContext] Could not connect to local server:', err);
       setIsOffline(true);
     } finally {
       setIsLoading(false);

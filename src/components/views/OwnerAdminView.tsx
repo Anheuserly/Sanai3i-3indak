@@ -8,10 +8,7 @@ export const OwnerAdminView: React.FC = () => {
   const { promoteToAdmin, demoteAdmin, auditLogs } = useApp();
 
   const [newAdminName, setNewAdminName] = useState("");
-  const [currentAdmins, setCurrentAdmins] = useState<string[]>([
-    "فؤاد كنعان (أدمن تشغيل)",
-    "سمير جابر (أدمن متابعة)",
-  ]);
+  const [currentAdmins, setCurrentAdmins] = useState<string[]>([]);
 
   const handlePromote = (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,28 +100,34 @@ export const OwnerAdminView: React.FC = () => {
           <h4 className="text-xs font-black text-slate-700">
             مسؤولو النظام الحاليون في نابلس ({currentAdmins.length}):
           </h4>
-          <div className="space-y-2">
-            {currentAdmins.map((adm) => (
-              <div
-                key={adm}
-                className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 font-black text-xs flex items-center justify-center">
-                    🛡️
-                  </div>
-                  <span className="font-extrabold text-xs text-slate-800">{adm}</span>
-                </div>
-                <button
-                  onClick={() => handleDemote(adm)}
-                  className="text-red-600 hover:text-red-700 font-extrabold text-xs flex items-center gap-1 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all"
+          {currentAdmins.length === 0 ? (
+            <div className="p-4 text-center text-slate-400 bg-slate-50 rounded-xl border border-slate-200 text-xs font-bold">
+              لا يوجد مشرفون إضافيون معينون حالياً.
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {currentAdmins.map((adm) => (
+                <div
+                  key={adm}
+                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between"
                 >
-                  <UserMinus className="w-3.5 h-3.5" />
-                  <span>إزالة صلاحية الأدمن</span>
-                </button>
-              </div>
-            ))}
-          </div>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 font-black text-xs flex items-center justify-center">
+                      🛡️
+                    </div>
+                    <span className="font-extrabold text-xs text-slate-800">{adm}</span>
+                  </div>
+                  <button
+                    onClick={() => handleDemote(adm)}
+                    className="text-red-600 hover:text-red-700 font-extrabold text-xs flex items-center gap-1 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all"
+                  >
+                    <UserMinus className="w-3.5 h-3.5" />
+                    <span>إزالة صلاحية الأدمن</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

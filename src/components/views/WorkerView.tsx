@@ -16,25 +16,14 @@ export const WorkerView: React.FC = () => {
   const [fakeReportText, setFakeReportText] = useState("");
   const [showFakeModal, setShowFakeModal] = useState(false);
 
-  const incomingRequests = orders.length > 0
-    ? orders.map((o) => ({
-        id: o.id,
-        customerName: o.customerName,
-        profession: o.profession,
-        area: o.area,
-        details: o.description,
-        time: o.time,
-      }))
-    : [
-        {
-          id: "REQ-101",
-          customerName: "أحمد النابلسي",
-          profession: "سبّاك",
-          area: "المعاجين، نابلس",
-          details: "تسريب مياه حاد تحت مجلى المطبخ وبحاجة لتبديل وصلة وصمام أمان.",
-          time: "اليوم",
-        },
-      ];
+  const incomingRequests = orders.map((o) => ({
+    id: o.id,
+    customerName: o.customerName,
+    profession: o.profession,
+    area: o.area,
+    details: o.description,
+    time: o.time,
+  }));
 
   const handleReport = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,19 +42,19 @@ export const WorkerView: React.FC = () => {
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-emerald-600 text-white font-black text-xl flex items-center justify-center shadow-md shadow-emerald-600/20">
-            خليل
+            🛠️
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-2xl font-black text-slate-900">
-                الأسطى خليل النابلسي
+                لوحة فني الصيانة (صنايعي معتمد)
               </h2>
               <span className="px-3 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs">
-                صنايعي معتمد ✓
+                معتمد ✓
               </span>
             </div>
             <p className="text-slate-500 text-xs font-semibold mt-1">
-              مهنة السباكة والتسريبات • رفيديا وكافة مناطق نابلس
+              خدمات الصيانة والتشغيل لكافة أحياء ومناطق نابلس
             </p>
           </div>
         </div>
@@ -163,47 +152,53 @@ export const WorkerView: React.FC = () => {
           الطلبات الجديدة المطابقة لمهنتك في نابلس ({incomingRequests.length})
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {incomingRequests.map((req) => (
-            <div
-              key={req.id}
-              className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-black px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
-                  {req.area}
-                </span>
-                <span className="text-[11px] font-bold text-slate-400">
-                  {req.time}
-                </span>
-              </div>
+        {incomingRequests.length === 0 ? (
+          <div className="p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-200 text-xs font-bold">
+            لا توجد طلبات واردة حالياً في منطقتك.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {incomingRequests.map((req) => (
+              <div
+                key={req.id}
+                className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
+                    {req.area}
+                  </span>
+                  <span className="text-[11px] font-bold text-slate-400">
+                    {req.time}
+                  </span>
+                </div>
 
-              <div>
-                <h4 className="font-black text-base text-slate-900">
-                  الزبون: {req.customerName}
-                </h4>
-                <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
-                  {req.details}
-                </p>
-              </div>
+                <div>
+                  <h4 className="font-black text-base text-slate-900">
+                    الزبون: {req.customerName}
+                  </h4>
+                  <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
+                    {req.details}
+                  </p>
+                </div>
 
-              <div className="flex items-center gap-3 pt-2">
-                <button
-                  onClick={() => alert(`تم قبول الطلب ${req.id} بنجاح، تواصل مع الزبون.`)}
-                  className="flex-1 bg-primary hover:bg-primary-dark text-white font-black text-xs py-2.5 rounded-xl transition-all shadow-xs"
-                >
-                  🤝 قبول الطلب
-                </button>
-                <button
-                  onClick={() => alert("تم تجاهل الطلب.")}
-                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition-all"
-                >
-                  تجاهل
-                </button>
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    onClick={() => alert(`تم قبول الطلب ${req.id} بنجاح، تواصل مع الزبون.`)}
+                    className="flex-1 bg-primary hover:bg-primary-dark text-white font-black text-xs py-2.5 rounded-xl transition-all shadow-xs"
+                  >
+                    🤝 قبول الطلب
+                  </button>
+                  <button
+                    onClick={() => alert("تم تجاهل الطلب.")}
+                    className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition-all"
+                  >
+                    تجاهل
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Fake Report Modal */}

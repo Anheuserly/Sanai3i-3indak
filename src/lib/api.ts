@@ -6,7 +6,7 @@ import {
   WorkerApplication,
   FakeReport,
   AuditLog,
-} from '@/data/mockData';
+} from '@/types';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4050';
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'ak_live_sanai3i_7c9f82e14a5d892';

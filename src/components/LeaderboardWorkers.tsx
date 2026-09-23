@@ -13,6 +13,10 @@ export const LeaderboardWorkers: React.FC = () => {
     openResponsibilityModal();
   };
 
+  if (!workersList || workersList.length === 0) {
+    return null;
+  }
+
   return (
     <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">

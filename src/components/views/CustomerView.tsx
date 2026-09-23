@@ -9,7 +9,14 @@ import { TrackingTimeline } from "@/components/TrackingTimeline";
 import { Search, MapPin, Wrench, Shield, AlertCircle, ArrowLeft, Smartphone } from "lucide-react";
 
 export const CustomerView: React.FC = () => {
-  const { openResponsibilityModal, setSelectedCategory, openDownloadModal } = useApp();
+  const {
+    openResponsibilityModal,
+    setSelectedCategory,
+    openDownloadModal,
+    workersList,
+    topCustomers,
+    orders,
+  } = useApp();
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleHeroSearch = (e: React.FormEvent) => {
@@ -164,18 +171,22 @@ export const CustomerView: React.FC = () => {
         <CategoryGrid />
       </div>
 
-      {/* Leaderboards Grid (Top 5 Workers & Top 3 Customers) */}
-      <section id="leaderboard" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <LeaderboardWorkers />
-          <LeaderboardCustomers />
-        </div>
-      </section>
+      {/* Leaderboards Grid (Only shown when real workers/customers exist) */}
+      {(workersList.length > 0 || topCustomers.length > 0) && (
+        <section id="leaderboard" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <LeaderboardWorkers />
+            <LeaderboardCustomers />
+          </div>
+        </section>
+      )}
 
-      {/* Live Tracking Section */}
-      <section id="tracking" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <TrackingTimeline />
-      </section>
+      {/* Live Tracking Section (Only shown when active orders exist) */}
+      {orders.length > 0 && (
+        <section id="tracking" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <TrackingTimeline />
+        </section>
+      )}
 
     </div>
   );

@@ -2,13 +2,17 @@
 
 import React from "react";
 import { useApp } from "@/context/AppContext";
-import { REQUEST_STATUS_LIST } from "@/data/mockData";
+import { REQUEST_STATUS_LIST } from "@/types";
 import { Clock, Phone, MapPin, CheckCircle, ChevronLeft } from "lucide-react";
 
 export const TrackingTimeline: React.FC = () => {
   const { activeStatusIndex, advanceStatus, orders } = useApp();
-  const current = REQUEST_STATUS_LIST[activeStatusIndex];
-  const activeOrder = orders.length > 0 ? orders[0] : null;
+
+  if (!orders || orders.length === 0) {
+    return null;
+  }
+
+  const activeOrder = orders[0];
 
   return (
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
@@ -19,12 +23,10 @@ export const TrackingTimeline: React.FC = () => {
             تتبع حي ومباشر (قاعدة البيانات)
           </div>
           <h3 className="text-2xl font-black text-slate-900">
-            حالة الطلب {activeOrder ? activeOrder.id : '#REQ-101'}
+            حالة الطلب {activeOrder.id}
           </h3>
           <p className="text-slate-500 text-xs mt-1">
-            {activeOrder
-              ? `${activeOrder.profession} — ${activeOrder.description} — ${activeOrder.area}`
-              : 'صيانة سباكة وتسريب مياه في مجلى المطبخ — رفيديا، نابلس'}
+            {activeOrder.profession} — {activeOrder.description} — {activeOrder.area}
           </p>
         </div>
 
@@ -39,39 +41,30 @@ export const TrackingTimeline: React.FC = () => {
         </div>
       </div>
 
-      {/* Assigned Worker Profile Card */}
-      <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3">
-          <div className="w-13 h-13 rounded-2xl bg-primary text-white font-black text-lg flex items-center justify-center">
-            خليل
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h4 className="font-black text-sm text-slate-900">
-                الأسطى خليل النابلسي
-              </h4>
-              <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                معتمد ✓
-              </span>
+      {/* Assigned Worker Profile Card (if assigned) */}
+      {activeOrder.assignedWorkerName && (
+        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-13 h-13 rounded-2xl bg-primary text-white font-black text-lg flex items-center justify-center">
+              {activeOrder.assignedWorkerName.slice(0, 2)}
             </div>
-            <div className="text-xs text-slate-500 font-semibold mt-0.5 flex items-center gap-2">
-              <span>سبّاك ممتاز</span>
-              <span>•</span>
-              <span className="text-amber-600 font-bold">★ 4.98 (164 تقييم)</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="font-black text-sm text-slate-900">
+                  {activeOrder.assignedWorkerName}
+                </h4>
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                  معتمد ✓
+                </span>
+              </div>
+              <div className="text-xs text-slate-500 font-semibold mt-0.5">
+                <span>{activeOrder.profession}</span>
+              </div>
             </div>
           </div>
         </div>
+      )}
 
-        <div className="flex items-center gap-2">
-          <a
-            href="tel:0599123456"
-            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs px-4 py-2 rounded-xl transition-all"
-          >
-            <Phone className="w-3.5 h-3.5" />
-            <span>اتصال بالفني</span>
-          </a>
-        </div>
-      </div>
 
       {/* 7 Statuses Stepper */}
       <div className="relative space-y-6 before:absolute before:top-4 before:bottom-4 before:right-4.5 before:w-0.5 before:bg-slate-200">

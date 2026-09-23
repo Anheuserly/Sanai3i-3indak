@@ -7,6 +7,10 @@ import { Award, CheckCircle } from "lucide-react";
 export const LeaderboardCustomers: React.FC = () => {
   const { topCustomers } = useApp();
 
+  if (!topCustomers || topCustomers.length === 0) {
+    return null;
+  }
+
   return (
     <div className="bg-gradient-to-br from-purple-50/50 via-white to-slate-50 rounded-3xl p-6 border border-purple-100/80 shadow-sm">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-purple-100">

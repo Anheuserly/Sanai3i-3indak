@@ -10,5 +10,15 @@
     "directory": "./out",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "sanai3i-3indak.amcmep.in",
+      "custom_domain": true
+    }
+  ],
+  "vars": {
+    "NEXT_PUBLIC_PROJECT_SCOPE": "sanai3i_3indak"
+  },
+  "workers_dev": true
 }
