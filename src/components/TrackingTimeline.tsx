@@ -6,8 +6,9 @@ import { REQUEST_STATUS_LIST } from "@/data/mockData";
 import { Clock, Phone, MapPin, CheckCircle, ChevronLeft } from "lucide-react";
 
 export const TrackingTimeline: React.FC = () => {
-  const { activeStatusIndex, advanceStatus } = useApp();
+  const { activeStatusIndex, advanceStatus, orders } = useApp();
   const current = REQUEST_STATUS_LIST[activeStatusIndex];
+  const activeOrder = orders.length > 0 ? orders[0] : null;
 
   return (
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
@@ -15,13 +16,15 @@ export const TrackingTimeline: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-black mb-2">
             <Clock className="w-3.5 h-3.5 text-blue-600" />
-            تتبع حي ومباشر
+            تتبع حي ومباشر (قاعدة البيانات)
           </div>
           <h3 className="text-2xl font-black text-slate-900">
-            حالة الطلب الحالي #REQ-102
+            حالة الطلب {activeOrder ? activeOrder.id : '#REQ-101'}
           </h3>
           <p className="text-slate-500 text-xs mt-1">
-            صيانة سباكة وتسريب مياه في مجلى المطبخ — رفيديا، نابلس
+            {activeOrder
+              ? `${activeOrder.profession} — ${activeOrder.description} — ${activeOrder.area}`
+              : 'صيانة سباكة وتسريب مياه في مجلى المطبخ — رفيديا، نابلس'}
           </p>
         </div>
 

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
-import { CATEGORIES_19, NABLUS_AREAS } from "@/data/mockData";
 import { X, AlertTriangle, ShieldCheck, CheckCircle2 } from "lucide-react";
 
 export const ResponsibilityModal: React.FC = () => {
@@ -12,6 +11,8 @@ export const ResponsibilityModal: React.FC = () => {
     selectedCategory,
     setSelectedCategory,
     submitNewRequest,
+    categories,
+    areas,
   } = useApp();
 
   const [description, setDescription] = useState<string>(
@@ -86,7 +87,7 @@ export const ResponsibilityModal: React.FC = () => {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none focus:border-primary focus:bg-white transition-all"
               >
-                {CATEGORIES_19.map((c) => (
+                {categories.map((c) => (
                   <option key={c.id} value={c.name}>
                     {c.icon} {c.name} — {c.description}
                   </option>
@@ -118,7 +119,7 @@ export const ResponsibilityModal: React.FC = () => {
                 onChange={(e) => setArea(e.target.value)}
                 className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none focus:border-primary focus:bg-white transition-all"
               >
-                {NABLUS_AREAS.map((a) => (
+                {areas.map((a) => (
                   <option key={a} value={a}>
                     📍 نابلس — {a}
                   </option>

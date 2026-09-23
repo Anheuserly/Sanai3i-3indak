@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import { CATEGORIES_19 } from "@/data/mockData";
 import { useApp } from "@/context/AppContext";
 
 export const CategoryGrid: React.FC = () => {
-  const { setSelectedCategory, openResponsibilityModal } = useApp();
+  const { categories, setSelectedCategory, openResponsibilityModal } = useApp();
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName);
@@ -19,7 +18,7 @@ export const CategoryGrid: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-black mb-2">
               <span>🛠️</span>
-              <span>19 مهنة معتمدة وموثقة</span>
+              <span>{categories.length} مهنة معتمدة بقاعدة البيانات</span>
             </div>
             <h2 className="text-3xl font-black text-slate-900 tracking-tight">
               كافة خدمات الصيانة في نابلس
@@ -31,7 +30,7 @@ export const CategoryGrid: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-4">
-          {CATEGORIES_19.map((cat) => (
+          {categories.map((cat) => (
             <div
               key={cat.id}
               onClick={() => handleCategoryClick(cat.name)}

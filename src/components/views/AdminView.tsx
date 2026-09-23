@@ -11,6 +11,8 @@ export const AdminView: React.FC = () => {
     rejectWorker,
     fakeReports,
     auditLogs,
+    workersList,
+    orders,
   } = useApp();
 
   const [rejectReason, setRejectReason] = useState("");
@@ -59,11 +61,11 @@ export const AdminView: React.FC = () => {
         </div>
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
           <div className="text-xs font-bold text-slate-500 mb-1">صنائعية معتمدين بنابلس</div>
-          <div className="text-2xl font-black text-emerald-600">84 فني</div>
+          <div className="text-2xl font-black text-emerald-600">{workersList.length} فني</div>
         </div>
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
           <div className="text-xs font-bold text-slate-500 mb-1">إجمالي طلبات الصيانة</div>
-          <div className="text-2xl font-black text-primary">312 طلب</div>
+          <div className="text-2xl font-black text-primary">{orders.length} طلب</div>
         </div>
       </div>
 

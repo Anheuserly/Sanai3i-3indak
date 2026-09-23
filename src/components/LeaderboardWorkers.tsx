@@ -2,12 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
-import { TOP_WORKERS } from "@/data/mockData";
 import { useApp } from "@/context/AppContext";
 import { Star, ShieldCheck, MapPin } from "lucide-react";
 
 export const LeaderboardWorkers: React.FC = () => {
-  const { openResponsibilityModal, setSelectedCategory } = useApp();
+  const { workersList, openResponsibilityModal, setSelectedCategory } = useApp();
 
   const handleRequestWorker = (profession: string) => {
     setSelectedCategory(profession);
@@ -20,10 +19,10 @@ export const LeaderboardWorkers: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-accent font-black text-xs mb-1">
             <span>🏆</span>
-            <span>الترتيب المعتمد في نابلس</span>
+            <span>الترتيب المعتمد في نابلس (قاعدة البيانات)</span>
           </div>
           <h3 className="text-xl font-black text-slate-900">
-            أفضل 5 صنايعية في نابلس
+            أفضل {workersList.length} صنايعية في نابلس
           </h3>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
             محسوبة بدقة وفق أعلى متوسط تقييم وعدد الطلبات المكتملة فعلياً
@@ -32,7 +31,7 @@ export const LeaderboardWorkers: React.FC = () => {
       </div>
 
       <div className="space-y-3.5">
-        {TOP_WORKERS.map((worker) => (
+        {workersList.map((worker) => (
           <div
             key={worker.id}
             className="p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"

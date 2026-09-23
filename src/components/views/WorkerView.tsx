@@ -9,30 +9,32 @@ export const WorkerView: React.FC = () => {
     activeStatusIndex,
     advanceStatus,
     submitFakeReport,
+    orders,
   } = useApp();
 
   const [isAvailable, setIsAvailable] = useState(true);
   const [fakeReportText, setFakeReportText] = useState("");
   const [showFakeModal, setShowFakeModal] = useState(false);
 
-  const incomingRequests = [
-    {
-      id: "REQ-104",
-      customerName: "طارق قادري",
-      profession: "سبّاك",
-      area: "المخفية، نابلس",
-      details: "انكسار صمام مياه الحمام الرئيسي وتدفق مياه بحاجة لتدخل فوري.",
-      time: "منذ 4 دقائق",
-    },
-    {
-      id: "REQ-105",
-      customerName: "منى استيتية",
-      profession: "سبّاك",
-      area: "البلدة القديمة - حارة الياسمينة",
-      details: "انسداد في شبكة تصريف المغسلة والمجلى.",
-      time: "منذ 15 دقيقة",
-    },
-  ];
+  const incomingRequests = orders.length > 0
+    ? orders.map((o) => ({
+        id: o.id,
+        customerName: o.customerName,
+        profession: o.profession,
+        area: o.area,
+        details: o.description,
+        time: o.time,
+      }))
+    : [
+        {
+          id: "REQ-101",
+          customerName: "أحمد النابلسي",
+          profession: "سبّاك",
+          area: "المعاجين، نابلس",
+          details: "تسريب مياه حاد تحت مجلى المطبخ وبحاجة لتبديل وصلة وصمام أمان.",
+          time: "اليوم",
+        },
+      ];
 
   const handleReport = (e: React.FormEvent) => {
     e.preventDefault();

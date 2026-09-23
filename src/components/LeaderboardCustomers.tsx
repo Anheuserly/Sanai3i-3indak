@@ -1,29 +1,31 @@
 "use client";
 
 import React from "react";
-import { TOP_CUSTOMERS } from "@/data/mockData";
+import { useApp } from "@/context/AppContext";
 import { Award, CheckCircle } from "lucide-react";
 
 export const LeaderboardCustomers: React.FC = () => {
+  const { topCustomers } = useApp();
+
   return (
     <div className="bg-gradient-to-br from-purple-50/50 via-white to-slate-50 rounded-3xl p-6 border border-purple-100/80 shadow-sm">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-purple-100">
         <div>
           <div className="flex items-center gap-1.5 text-purple-700 font-black text-xs mb-1">
             <Award className="w-4 h-4" />
-            <span>لوحة التميز والمصداقية</span>
+            <span>لوحة التميز والمصداقية (قاعدة البيانات)</span>
           </div>
           <h3 className="text-xl font-black text-slate-900">
             أكثر الزبائن طلباً في نابلس
           </h3>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
-            محسوبة حصراً على أساس الطلبات المكتملة الناجحة (تُستثنى الطلبات الملغاة أو المتنازع عليها)
+            محسوبة حصراً على أساس الطلبات المكتملة الناجحة في نابلس
           </p>
         </div>
       </div>
 
       <div className="space-y-3">
-        {TOP_CUSTOMERS.map((cust) => (
+        {topCustomers.map((cust) => (
           <div
             key={cust.id}
             className="p-4 rounded-2xl bg-white border border-purple-100/60 shadow-xs flex items-center justify-between hover:border-purple-300 transition-all"
