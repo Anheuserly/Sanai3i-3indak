@@ -29,6 +29,7 @@ interface AppContextType {
   currentRole: UserRole;
   setCurrentRole: (role: UserRole) => void;
   currentUserEmail?: string;
+  setCurrentUserEmail: (email: string) => void;
   loginAsOwner: (email: string) => boolean;
   activeStatusIndex: number;
   advanceStatus: (orderId?: string) => Promise<void>;
@@ -421,6 +422,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         currentRole,
         setCurrentRole,
         currentUserEmail,
+        setCurrentUserEmail,
         loginAsOwner,
         activeStatusIndex,
         advanceStatus,

@@ -18,11 +18,13 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "صنايعي عندك — المنصة المحلية الأولى للصيانة في نابلس، فلسطين",
+  title: "صنايعي عندك (Sanai3i 3indak) — نابلس، فلسطين",
   description:
-    "صنايعي شاطر ومضمون لحد عندك في نابلس. طلب صنايعي مجاني 100%، بدون بطاقات دفع أو محافظ. الدفع نقداً ومباشرة بعد إنجاز العمل.",
+    "صنايعك ... يوصلونك. المنصة الأولى لخدمات الصيانة المنزلية والحرفيين في نابلس. طلب صنايعي مجاني 100%، والدفع نقداً ومباشرة عند إنجاز العمل.",
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>",
+    icon: "/favicon.png",
+    shortcut: "/favicon.ico",
+    apple: "/logo.png",
   },
 };
 

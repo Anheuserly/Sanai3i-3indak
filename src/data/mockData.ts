@@ -308,8 +308,13 @@ export const INITIAL_APPLICATIONS: WorkerApplication[] = [
 
 // Founder / Owner authorized emails
 export const FOUNDER_EMAILS = [
+  "aprelsg22@gmail.com",
+  "gounjakurlus@gmail.com",
   "owner@sanai3i.ps",
   "founder@sanai3i.ps",
   "admin@sanai3i.ps",
   "ot2808.ok@gmail.com",
 ];
+
+export const OWNER_DEFAULT_PASSWORD = "Sanai3i#Nablus2026";
+

@@ -77,8 +77,12 @@ export const Navbar: React.FC = () => {
           {/* Logo & Brand Identity */}
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
-                <Wrench className="w-6 h-6" />
+              <div className="w-12 h-12 rounded-2xl overflow-hidden shadow-md shadow-primary/20 group-hover:scale-105 transition-transform bg-white border border-slate-100 flex items-center justify-center p-0.5">
+                <img
+                  src="/logo.png"
+                  alt="صنايعي عندك"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <span className="text-2xl font-black tracking-tight text-primary block leading-none">
@@ -120,6 +124,16 @@ export const Navbar: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="flex items-center gap-2.5">
+            {/* Login Link */}
+            <Link
+              href="/login"
+              className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold px-3 sm:px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition-all"
+              title="تسجيل الدخول أو إنشاء حساب"
+            >
+              <User className="w-4 h-4 text-slate-600" />
+              <span>دخول</span>
+            </Link>
+
             {/* Direct APK Download Button */}
             <button
               onClick={openDownloadModal}

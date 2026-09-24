@@ -127,24 +127,39 @@ export const StaffLoginModal: React.FC = () => {
           </div>
 
           {selectedRole === "owner" ? (
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                البريد الإلكتروني المعتمد للمؤسس: *
-              </label>
-              <input
-                type="email"
-                required
-                dir="ltr"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                placeholder="owner@sanai3i.ps أو بريدك المسجل"
-                className="w-full text-xs font-bold p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-600 outline-none text-left"
-              />
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  البريد الإلكتروني المعتمد للمؤسس: *
+                </label>
+                <input
+                  type="email"
+                  required
+                  dir="ltr"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="Aprelsg22@gmail.com أو بريدك المسجل"
+                  className="w-full text-xs font-bold p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-600 outline-none text-left"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  كلمة المرور المعتمدة: *
+                </label>
+                <input
+                  type="password"
+                  dir="ltr"
+                  placeholder="Sanai3i#Nablus2026"
+                  className="w-full text-xs font-bold p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-600 outline-none text-left"
+                />
+              </div>
+
               <div className="flex flex-wrap gap-1.5 mt-2">
                 <span className="text-[10px] text-slate-400 font-bold self-center">
-                  أمثلة معتمدة:
+                  إيميلات المؤسسين المعتمدة:
                 </span>
-                {FOUNDER_EMAILS.slice(0, 3).map((f) => (
+                {FOUNDER_EMAILS.slice(0, 4).map((f) => (
                   <button
                     key={f}
                     type="button"
