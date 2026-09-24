@@ -32,7 +32,7 @@ export const TrackingTimeline: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={advanceStatus}
+            onClick={() => advanceStatus()}
             className="bg-primary hover:bg-primary-dark text-white font-black text-xs px-4 py-2.5 rounded-xl shadow-xs transition-all flex items-center gap-1.5"
           >
             <span>محاكاة المرحلة التالية</span>

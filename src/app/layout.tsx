@@ -7,6 +7,8 @@ import { Footer } from "@/components/Footer";
 import { ResponsibilityModal } from "@/components/ResponsibilityModal";
 import { DownloadApkModal } from "@/components/DownloadApkModal";
 import { StaffLoginModal } from "@/components/StaffLoginModal";
+import { WorkerApplicationModal } from "@/components/WorkerApplicationModal";
+import { FeedbackReportModal } from "@/components/FeedbackReportModal";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -39,6 +41,8 @@ export default function RootLayout({
           <ResponsibilityModal />
           <DownloadApkModal />
           <StaffLoginModal />
+          <WorkerApplicationModal />
+          <FeedbackReportModal />
         </AppProvider>
       </body>
     </html>

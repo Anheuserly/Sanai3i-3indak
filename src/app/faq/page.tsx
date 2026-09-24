@@ -2,7 +2,20 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { HelpCircle, ChevronDown, Wrench, User, Banknote, MapPin, MessageSquare, PhoneCall, ShieldCheck } from "lucide-react";
+import {
+  HelpCircle,
+  ChevronDown,
+  Wrench,
+  User,
+  Banknote,
+  MapPin,
+  MessageSquare,
+  Lightbulb,
+  Bug,
+  AlertTriangle,
+  HardHat,
+} from "lucide-react";
+import { useApp } from "@/context/AppContext";
 
 interface FAQItem {
   q: string;
@@ -54,12 +67,12 @@ const faqs: FAQItem[] = [
   {
     category: "worker",
     q: "كيف أنضم كصنايعي أو حرفي في نابلس؟",
-    a: "يمكنك التسجيل بسهولة عبر التطبيق باختيار مهنتك من بين الـ 19 مهنة المعتمدة، وتحديد منطقتك ورقم هاتفك الفلسطيني، ورفع صورة الهوية أو إثبات الخبرة ليتم تفعيل حسابك.",
+    a: "يمكنك التسجيل بسهولة عبر التطبيق باختيار كافة المهن التي تتقنها من بين الـ 19 مهنة المعتمدة، وتحديد منطقتك ورقم هاتفك الفلسطيني، ليتم مراجعة طلبك وتفعيله من قبل مالكي المنصة.",
   },
   {
     category: "worker",
     q: "هل التطبيق مجاني للصنائعية؟",
-    a: "الشهر الأول مجاني بالكامل 100% لجميع الصنائعية الجدد بدون أي شروط لتجربة المنصة واستقبال الطلبات. بعد ذلك تتوفر باقات اشتراك شهرية رمزية ثابتة، بدون أي عمولة أو نسبة مئوية على أتعابك الميدانية.",
+    a: "الشهر الأول مجاني بالكامل 100% لجميع الصنائعية الجدد بدون أي شروط لتجربة المنصة واستقبال الطلبات. بعد ذلك تتوفر باقات رمزية ثابتة، بدون أي عمولة أو نسبة مئوية على أتعابك الميدانية.",
   },
   {
     category: "worker",
@@ -71,28 +84,33 @@ const faqs: FAQItem[] = [
   {
     category: "nablus",
     q: "ما هي الأحياء والمناطق المغطاة في نابلس؟",
-    a: "تغطي المنصة كامل أحياء مدينة نابلس الـ 19 الرئيسية: رفيديا، المخفية، المعاجين، البلدة القديمة، الجبل الشمالي، الجبل الجنوبي، شارع فيصل، المساكن الشعبية، خلة العامود، عين بيت الماء، مخيم بلاطة، مخيم عسكر، زواتا، بيت وزن، وغيرها من المناطق المحيطة.",
+    a: "تغطي المنصة كامل أحياء مدينة نابلس الرئيسية: رفيديا، المخفية، المعاجين، البلدة القديمة، الجبل الشمالي، الجبل الجنوبي، شارع فيصل، المساكن الشعبية، خلة العامود، عين بيت الماء، مخيم بلاطة، مخيم عسكر، زواتا، بيت وزن، وغيرها من المناطق المحيطة.",
   },
   {
     category: "nablus",
     q: "ما هي المهن الـ 19 المتوفرة في المنصة؟",
-    a: "تغطي المنصة: كهربائي منازل، سباك ومواسرجي، فني تكييف وتبريد، نجار وتركيب أثاث، دهين وديكورات، ألمنيوم وشبابيك، تصليح غسالات، تصليح ثلاجات، قفال ومفاتيح، عزل أسطح، فني ستالايت وشاشات، فني سخانات شمسية، حداد شبابيك وأبواب، تركيب بلاط وبورسلان، تنظيف منازل ما بعد التشطيب، تركيب جبصين، صيانة غاز وبويلرات، فني كاميرات وشبكات، وشحن ونقل أثاث محلي.",
+    a: "تغطي المنصة: سباك ومواسرجي، كهربائي منازل، دهان وديكورات، نجار وتركيب أثاث، حداد ولحام متنقل، بناء وترميم وقصارة، فني تكييف وتبريد، فني غاز وأفران، تصليح غسالات ونشافات، أقفال ومفاتيح سريعة، ألمنيوم وزجاج وشاورات، صيانة أبواب وشبابيك، مضخات وخزانات مياه، تنجيد وصيانة أثاث، صيانة عامة وشاملة، ميكانيكي سيارات متنقل، كهربائي سيارات متنقل، بنشر وإطارات متنقل، وصيانة دراجات وسكوترات كهربائية.",
   },
 ];
 
 export default function FAQPage() {
-  const [activeTab, setActiveTab] = useState<"all" | "customer" | "worker" | "payment" | "nablus">("all");
+  const { openFeedbackModal, openWorkerApplicationModal } = useApp();
+  const [activeTab, setActiveTab] = useState<
+    "all" | "customer" | "worker" | "payment" | "nablus"
+  >("all");
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
-  const filteredFaqs = activeTab === "all" ? faqs : faqs.filter((f) => f.category === activeTab);
+  const filteredFaqs =
+    activeTab === "all" ? faqs : faqs.filter((f) => f.category === activeTab);
 
   return (
     <div className="py-12 bg-slate-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs font-bold text-slate-500 mb-6">
-          <Link href="/" className="hover:text-primary transition-colors">الرئيسية</Link>
+          <Link href="/" className="hover:text-primary transition-colors">
+            الرئيسية
+          </Link>
           <span>/</span>
           <span className="text-primary">الأسئلة الشائعة والمساعدة</span>
         </nav>
@@ -103,7 +121,9 @@ export default function FAQPage() {
             <HelpCircle className="w-3.5 h-3.5" />
             <span>مركز الدعم والمساعدة المباشرة — نابلس</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black mb-3">الأسئلة الأكثر شيوعاً وإجاباتها</h1>
+          <h1 className="text-3xl sm:text-4xl font-black mb-3">
+            الأسئلة الأكثر شيوعاً وإجاباتها
+          </h1>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto font-medium">
             كل ما تحتاج لمعرفته حول طلب صنايعي، الدفع النقدي المباشر، جودة الصيانة، والتغطية في أحياء نابلس.
           </p>
@@ -200,36 +220,59 @@ export default function FAQPage() {
           })}
         </div>
 
-        {/* Contact Support Channels Box */}
-        <div className="bg-gradient-to-br from-primary to-slate-900 text-white rounded-3xl p-8 sm:p-10 shadow-xl">
+        {/* In-App Direct Community Center (Replaces Phone/WhatsApp/Hours) */}
+        <div className="bg-gradient-to-br from-slate-900 via-primary to-slate-900 text-white rounded-3xl p-8 sm:p-10 shadow-xl">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <h3 className="text-2xl font-black mb-2">لم تجد إجابة لاستفسارك؟</h3>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-black mb-3">
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>خدمة متاحة على مدار الساعة بدون انقطاع</span>
+            </div>
+            <h3 className="text-2xl font-black mb-2">
+              شاركنا اقتراحك، أبلغ عن خلل، أو انضم كصنايعي
+            </h3>
             <p className="text-slate-300 text-xs sm:text-sm font-medium">
-              فريق خدمة المجتمع والدعم المحلي في نابلس متاح دائماً لمساعدتك في أي وقت لحل أي استفسار أو مشكلة.
+              لا داعي للاتصالات أو المراسلات الخارجية. منظومتنا التفاعلية الذكية تتيح لك إرسال مقترحاتك أو شكواك أو طلب انضمامك بضغطة زر واحدة لتصل مباشرة لمؤسسي المنصة.
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
-              <PhoneCall className="w-6 h-6 text-accent mx-auto mb-2" />
-              <div className="font-bold text-xs mb-1">الاتصال المباشر</div>
-              <div className="text-xs text-slate-300 font-mono" dir="ltr">+970 59 900 0000</div>
-            </div>
 
-            <div className="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
-              <MessageSquare className="w-6 h-6 text-emerald-400 mx-auto mb-2" />
-              <div className="font-bold text-xs mb-1">واتساب الدعم السريع</div>
-              <div className="text-xs text-slate-300 font-mono" dir="ltr">+972 59 900 0000</div>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <button
+              onClick={openFeedbackModal}
+              className="bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl p-4 text-center transition-all group"
+            >
+              <Lightbulb className="w-6 h-6 text-amber-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+              <div className="font-bold text-xs mb-1">تقديم اقتراح</div>
+              <div className="text-[11px] text-slate-300">لتطوير خدمات نابلس</div>
+            </button>
 
-            <div className="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
-              <ShieldCheck className="w-6 h-6 text-blue-400 mx-auto mb-2" />
-              <div className="font-bold text-xs mb-1">ساعات العمل في نابلس</div>
-              <div className="text-xs text-slate-300">يومياً من 8 ص حتى 10 م</div>
-            </div>
+            <button
+              onClick={openFeedbackModal}
+              className="bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl p-4 text-center transition-all group"
+            >
+              <Bug className="w-6 h-6 text-red-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+              <div className="font-bold text-xs mb-1">إبلاغ عن خلل فني</div>
+              <div className="text-[11px] text-slate-300">معالجة فورية وتحديث</div>
+            </button>
+
+            <button
+              onClick={openFeedbackModal}
+              className="bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl p-4 text-center transition-all group"
+            >
+              <AlertTriangle className="w-6 h-6 text-orange-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+              <div className="font-bold text-xs mb-1">شكوى ضد صنايعي</div>
+              <div className="text-[11px] text-slate-300">حماية حقوق الزبائن</div>
+            </button>
+
+            <button
+              onClick={openWorkerApplicationModal}
+              className="bg-accent/20 hover:bg-accent/30 border border-accent/40 rounded-2xl p-4 text-center transition-all group"
+            >
+              <HardHat className="w-6 h-6 text-accent mx-auto mb-2 group-hover:scale-110 transition-transform" />
+              <div className="font-bold text-xs text-accent mb-1">التقديم كصنايعي</div>
+              <div className="text-[11px] text-slate-200">اختيار تخصصات متعددة</div>
+            </button>
           </div>
         </div>
-
       </div>
     </div>
   );

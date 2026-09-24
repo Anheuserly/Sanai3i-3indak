@@ -1,3 +1,5 @@
+export type UserRole = 'customer' | 'worker' | 'owner';
+
 export interface Category {
   id: string;
   name: string;
@@ -10,6 +12,7 @@ export interface Worker {
   id: string;
   name: string;
   profession: string;
+  professions?: string[];
   area: string;
   rating: number;
   ratingCount: number;
@@ -44,6 +47,7 @@ export interface WorkerApplication {
   name: string;
   phone: string;
   profession: string;
+  professions?: string[];
   experienceYears: number;
   area: string;
   description: string;
@@ -56,6 +60,18 @@ export interface FakeReport {
   customerName: string;
   requestId: string;
   reason: string;
+  status: 'pending' | 'reviewed';
+}
+
+export interface UserFeedbackReport {
+  id: string;
+  type: 'suggestion' | 'bug' | 'worker_report';
+  name: string;
+  phone?: string;
+  targetWorkerName?: string;
+  title: string;
+  details: string;
+  timestamp: string;
   status: 'pending' | 'reviewed';
 }
 

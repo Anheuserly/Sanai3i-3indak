@@ -6,13 +6,27 @@ import { CategoryGrid } from "@/components/CategoryGrid";
 import { LeaderboardWorkers } from "@/components/LeaderboardWorkers";
 import { LeaderboardCustomers } from "@/components/LeaderboardCustomers";
 import { TrackingTimeline } from "@/components/TrackingTimeline";
-import { Search, MapPin, Wrench, Shield, AlertCircle, ArrowLeft, Smartphone } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Wrench,
+  Shield,
+  AlertCircle,
+  ArrowLeft,
+  Smartphone,
+  MessageSquare,
+  Lightbulb,
+  Bug,
+  HardHat,
+} from "lucide-react";
 
 export const CustomerView: React.FC = () => {
   const {
     openResponsibilityModal,
     setSelectedCategory,
     openDownloadModal,
+    openWorkerApplicationModal,
+    openFeedbackModal,
     workersList,
     topCustomers,
     orders,
@@ -22,19 +36,17 @@ export const CustomerView: React.FC = () => {
   const handleHeroSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      setSelectedCategory("سبّاك");
+      setSelectedCategory("سبّاك ومواسرجي");
       openResponsibilityModal();
     }
   };
 
   return (
     <div className="space-y-12 pb-16">
-      
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 via-slate-50 to-white pt-12 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto space-y-6">
-            
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-light text-amber-950 font-black text-xs border border-amber-300 shadow-xs">
               <span className="text-base">🇵🇸</span>
               <span>المنصة الرائدة في نابلس، فلسطين</span>
@@ -98,11 +110,12 @@ export const CustomerView: React.FC = () => {
                 >
                   <Smartphone className="w-4 h-4 text-emerald-600" />
                   <span>تثبيت التطبيق على هاتفك — تحميل ملف APK المباشر</span>
-                  <span className="bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">مجاني</span>
+                  <span className="bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                    مجاني
+                  </span>
                 </button>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -116,7 +129,7 @@ export const CustomerView: React.FC = () => {
             </div>
             <div className="space-y-1">
               <div className="inline-flex items-center gap-1 text-[11px] font-black text-accent">
-                <span>⚡ تثبيت مباشر بدون متجر</span>
+                <span>⚡ تثبيت مباشر ومستقل</span>
                 <span>•</span>
                 <span>أندرويد 8.0+</span>
               </div>
@@ -124,7 +137,7 @@ export const CustomerView: React.FC = () => {
                 حمل تطبيق «صنايعي عندك» APK لهواتف الأندرويد
               </h3>
               <p className="text-slate-300 text-xs sm:text-sm max-w-xl">
-                تنزيل مباشر لحزمة التطبيق الرسمية (~18.5 MB) دون الحاجة لمتجر Google Play. سريع وخفيف ومخصص لأهل نابلس.
+                تنزيل مباشر لحزمة التطبيق الرسمية المجمعة. سريع وخفيف ومخصص لأهل نابلس للطلب بلمسة واحدة.
               </p>
             </div>
           </div>
@@ -141,7 +154,7 @@ export const CustomerView: React.FC = () => {
         </div>
       </div>
 
-      {/* Banner for Worker Application */}
+      {/* Banner for Worker Application (Interactive Modal Open) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-r from-emerald-800 to-teal-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-right">
@@ -152,16 +165,15 @@ export const CustomerView: React.FC = () => {
               هل أنت فني أو صنايعي محترف؟
             </h3>
             <p className="text-emerald-100/90 text-sm max-w-xl">
-              سجل معنا كصنايعي معتمد وابدأ باستقبال طلبات الصيانة في منطقتك مجاناً وبدون أي اقتطاعات.
+              سجل معنا كصنايعي معتمد (يمكنك اختيار عدة مهن وحرف تتقنها) وابدأ باستقبال طلبات الصيانة في منطقتك مجاناً وبدون أي اقتطاعات.
             </p>
           </div>
           <button
-            onClick={() => {
-              alert("سيتم نقلك لنموذج التقديم كصنايعي معتمد في نابلس.");
-            }}
-            className="bg-accent hover:bg-accent-dark text-slate-950 font-black px-6 py-3 rounded-2xl text-sm transition-all whitespace-nowrap shadow-lg shadow-accent/20"
+            onClick={openWorkerApplicationModal}
+            className="bg-accent hover:bg-accent-dark text-slate-950 font-black px-6 py-3 rounded-2xl text-sm transition-all whitespace-nowrap shadow-lg shadow-accent/20 flex items-center gap-2 hover:scale-105"
           >
-            التقديم لتصبح صنايعي ➔
+            <HardHat className="w-4 h-4" />
+            <span>التقديم لتصبح صنايعي ➔</span>
           </button>
         </div>
       </div>
@@ -171,23 +183,108 @@ export const CustomerView: React.FC = () => {
         <CategoryGrid />
       </div>
 
-      {/* Leaderboards Grid (Only shown when real workers/customers exist) */}
-      {(workersList.length > 0 || topCustomers.length > 0) && (
-        <section id="leaderboard" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <LeaderboardWorkers />
-            <LeaderboardCustomers />
+      {/* Suggest / Report Bug / Report Worker / Apply Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black mb-1">
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>مركز المجتمع والمشاركة — نابلس</span>
+              </div>
+              <h3 className="text-2xl font-black text-slate-900">
+                صوتك يبني المنصة ويطور خدمات نابلس
+              </h3>
+              <p className="text-xs text-slate-500 font-semibold mt-1">
+                نحن هنا لخدمتكم 24 ساعة دون توقف. يمكنك تقديم مقترح، الإبلاغ عن خلل فني، تقديم شكوى ضد صنايعي، أو الانضمام لفريق الصنائعية.
+              </p>
+            </div>
+
+            <button
+              onClick={openFeedbackModal}
+              className="bg-primary hover:bg-primary-dark text-white font-black px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-xs self-start"
+            >
+              <span>فتح مركز المقترحات والبلاغات</span>
+              <span>←</span>
+            </button>
           </div>
-        </section>
-      )}
 
-      {/* Live Tracking Section (Only shown when active orders exist) */}
-      {orders.length > 0 && (
-        <section id="tracking" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <TrackingTimeline />
-        </section>
-      )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              onClick={openFeedbackModal}
+              className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 hover:border-amber-400 cursor-pointer transition-all space-y-2 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Lightbulb className="w-5 h-5" />
+              </div>
+              <h4 className="font-black text-sm text-slate-900">
+                تقديم اقتراح تطوير
+              </h4>
+              <p className="text-xs text-slate-600 font-medium">
+                شاركنا فكرة جديدة لتحسين الخدمات أو تغطية مناطق نابلس.
+              </p>
+            </div>
 
+            <div
+              onClick={openFeedbackModal}
+              className="p-4 rounded-2xl bg-red-50/60 border border-red-200 hover:border-red-400 cursor-pointer transition-all space-y-2 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-red-100 text-red-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Bug className="w-5 h-5" />
+              </div>
+              <h4 className="font-black text-sm text-slate-900">
+                الإبلاغ عن خلل فني
+              </h4>
+              <p className="text-xs text-slate-600 font-medium">
+                واجهتك مشكلة في الصفحة أو زر الطلب؟ أبلغنا لنصلحها فوراً.
+              </p>
+            </div>
+
+            <div
+              onClick={openFeedbackModal}
+              className="p-4 rounded-2xl bg-orange-50/60 border border-orange-200 hover:border-orange-400 cursor-pointer transition-all space-y-2 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <AlertCircle className="w-5 h-5" />
+              </div>
+              <h4 className="font-black text-sm text-slate-900">
+                تقديم شكوى ضد صنايعي
+              </h4>
+              <p className="text-xs text-slate-600 font-medium">
+                في حال وجود مخالفة للأسعار أو المواعيد يتم التحقيق المباشر.
+              </p>
+            </div>
+
+            <div
+              onClick={openWorkerApplicationModal}
+              className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200 hover:border-emerald-400 cursor-pointer transition-all space-y-2 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <HardHat className="w-5 h-5" />
+              </div>
+              <h4 className="font-black text-sm text-slate-900">
+                التقديم كصنايعي
+              </h4>
+              <p className="text-xs text-slate-600 font-medium">
+                سجل مهنك وحرفك المعتمدة وانضم لشبكة فنيي نابلس.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Leaderboards Grid */}
+      <section id="leaderboard" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <LeaderboardWorkers />
+          <LeaderboardCustomers />
+        </div>
+      </section>
+
+      {/* Live Tracking Section */}
+      <section id="tracking" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <TrackingTimeline />
+      </section>
     </div>
   );
 };

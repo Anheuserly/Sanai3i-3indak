@@ -3,30 +3,61 @@
 import React from "react";
 import Link from "next/link";
 import { useApp, UserRole } from "@/context/AppContext";
-import { Wrench, MapPin, Shield, User, HardHat, Crown, Bell, HelpCircle, Download, ArrowRight, LogOut } from "lucide-react";
+import {
+  Wrench,
+  MapPin,
+  Shield,
+  User,
+  HardHat,
+  Crown,
+  Download,
+  LogOut,
+  MessageSquare,
+} from "lucide-react";
 
 export const Navbar: React.FC = () => {
-  const { currentRole, setCurrentRole, openResponsibilityModal, openDownloadModal } = useApp();
+  const {
+    currentRole,
+    setCurrentRole,
+    openResponsibilityModal,
+    openDownloadModal,
+    openFeedbackModal,
+  } = useApp();
 
   const isStaffMode = currentRole !== "customer";
 
-  const roleNames: Record<UserRole, { label: string; color: string; icon: React.ReactNode }> = {
-    customer: { label: "زبون", color: "bg-primary text-white", icon: <User className="w-3.5 h-3.5" /> },
-    worker: { label: "صنايعي معتمد", color: "bg-emerald-600 text-white", icon: <HardHat className="w-3.5 h-3.5" /> },
-    admin: { label: "مشرف / أدمن", color: "bg-amber-600 text-white", icon: <Shield className="w-3.5 h-3.5" /> },
-    owner_admin: { label: "مالك المنصة", color: "bg-purple-700 text-white", icon: <Crown className="w-3.5 h-3.5" /> },
+  const roleNames: Record<
+    UserRole,
+    { label: string; color: string; icon: React.ReactNode }
+  > = {
+    customer: {
+      label: "زبون",
+      color: "bg-primary text-white",
+      icon: <User className="w-3.5 h-3.5" />,
+    },
+    worker: {
+      label: "صنايعي معتمد",
+      color: "bg-emerald-600 text-white",
+      icon: <HardHat className="w-3.5 h-3.5" />,
+    },
+    owner: {
+      label: "مالك المنصة (المؤسس)",
+      color: "bg-purple-700 text-white",
+      icon: <Crown className="w-3.5 h-3.5" />,
+    },
   };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-      
-      {/* Staff Mode Top Bar (Only visible when logged into Worker/Admin/Owner modes) */}
+      {/* Staff Mode Top Bar (Only visible when logged into Worker/Owner modes) */}
       {isStaffMode && (
         <div className="bg-slate-900 text-white px-4 py-1.5 text-xs flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span className="text-slate-400">وضع التصفح النشط:</span>
-            <span className={`px-2 py-0.5 rounded-md font-bold text-[11px] flex items-center gap-1 ${roleNames[currentRole].color}`}>
+            <span
+              className={`px-2 py-0.5 rounded-md font-bold text-[11px] flex items-center gap-1 ${roleNames[currentRole].color}`}
+            >
               {roleNames[currentRole].icon}
               <span>{roleNames[currentRole].label}</span>
             </span>
@@ -43,7 +74,6 @@ export const Navbar: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          
           {/* Logo & Brand Identity */}
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3 group">
@@ -62,13 +92,30 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Clean Navigation Links for Customers */}
+          {/* Clean Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-slate-600">
-            <Link href="/" className="hover:text-primary transition-colors">الرئيسية</Link>
-            <Link href="/#categories" className="hover:text-primary transition-colors">المهن الـ 19</Link>
-            <Link href="/#leaderboard" className="hover:text-primary transition-colors">أفضل الصنائعية</Link>
-            <Link href="/#tracking" className="hover:text-primary transition-colors">تتبع طلبي</Link>
-            <Link href="/faq" className="hover:text-primary transition-colors">الأسئلة والمساعدة</Link>
+            <Link href="/" className="hover:text-primary transition-colors">
+              الرئيسية
+            </Link>
+            <Link href="/#categories" className="hover:text-primary transition-colors">
+              المهن الـ 19
+            </Link>
+            <Link href="/#leaderboard" className="hover:text-primary transition-colors">
+              أفضل الصنائعية
+            </Link>
+            <Link href="/#tracking" className="hover:text-primary transition-colors">
+              تتبع طلبي
+            </Link>
+            <Link href="/faq" className="hover:text-primary transition-colors">
+              الأسئلة والمساعدة
+            </Link>
+            <button
+              onClick={openFeedbackModal}
+              className="text-slate-600 hover:text-primary transition-colors flex items-center gap-1"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>اقتراحات وبلاغات</span>
+            </button>
           </nav>
 
           {/* Action CTAs */}
@@ -92,7 +139,6 @@ export const Navbar: React.FC = () => {
               <span>طلب صنايعي</span>
             </button>
           </div>
-
         </div>
       </div>
     </header>

@@ -191,6 +191,34 @@ export async function fetchApplications(): Promise<WorkerApplication[]> {
   }));
 }
 
+export async function createApplication(data: {
+  name: string;
+  phone: string;
+  profession: string;
+  experienceYears: number;
+  area: string;
+  description?: string;
+}): Promise<WorkerApplication> {
+  const res = await fetch(`${API_BASE}/api/v1/applications`, {
+    method: 'POST',
+    headers: defaultHeaders,
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error(`Failed to create application: ${res.status}`);
+  const json = await res.json();
+  const row = json.data;
+  return {
+    id: row.id,
+    name: row.name,
+    phone: row.phone,
+    profession: row.profession,
+    experienceYears: row.experienceYears || 0,
+    area: row.area,
+    description: row.description || '',
+    status: row.status || 'pending',
+  };
+}
+
 export async function updateApplicationStatus(id: string, status: string): Promise<boolean> {
   const res = await fetch(`${API_BASE}/api/v1/applications/${id}/status`, {
     method: 'PATCH',
