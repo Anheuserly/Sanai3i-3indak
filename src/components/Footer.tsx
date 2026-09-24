@@ -2,11 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { Wrench, Shield, MapPin, Heart, Smartphone, Lock } from "lucide-react";
-import { useApp } from "@/context/AppContext";
+import { Wrench, Shield, MapPin, Heart, Smartphone } from "lucide-react";
 
 export const Footer: React.FC = () => {
-  const { openStaffModal } = useApp();
 
   return (
     <footer className="bg-slate-900 text-slate-300 pt-16 pb-12 border-t border-slate-800">
@@ -101,14 +99,6 @@ export const Footer: React.FC = () => {
               <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> 
               لأهلنا في نابلس
             </div>
-            <span>•</span>
-            <button
-              onClick={openStaffModal}
-              className="text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1 text-[11px]"
-            >
-              <Lock className="w-3 h-3" />
-              <span>دخول الإدارة والفنيين</span>
-            </button>
           </div>
         </div>
       </div>
