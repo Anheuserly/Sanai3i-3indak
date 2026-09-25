@@ -163,4 +163,27 @@ CREATE TABLE notifications (
     is_read BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- 12. جلسات الدخول والأجهزة والمتابعة (user_sessions)
+CREATE TABLE user_sessions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id VARCHAR(150) NOT NULL,
+    user_email VARCHAR(255),
+    user_name VARCHAR(150),
+    role VARCHAR(30) NOT NULL CHECK (role IN ('customer', 'worker', 'admin', 'owner_admin')),
+    device_id VARCHAR(100) NOT NULL,
+    platform VARCHAR(50) NOT NULL,
+    device_model VARCHAR(100),
+    app_version VARCHAR(30) NOT NULL DEFAULT '1.0.0',
+    ip_address VARCHAR(45),
+    session_token TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    last_active_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    logout_at TIMESTAMPTZ
+);
+
+CREATE INDEX idx_user_sessions_user_id ON user_sessions(user_id);
+CREATE INDEX idx_user_sessions_device_id ON user_sessions(device_id);
+CREATE INDEX idx_user_sessions_is_active ON user_sessions(is_active);
 ```
