@@ -18,7 +18,8 @@
     }
   ],
   "vars": {
-    "NEXT_PUBLIC_PROJECT_SCOPE": "sanai3i_3indak"
+    "NEXT_PUBLIC_PROJECT_SCOPE": "sanai3i_3indak",
+    "APK_DOWNLOAD_URL": "https://github.com/Anheuserly/Sanai3i-3indak/releases/latest/download/sanai3i-3indak.apk"
   },
   "workers_dev": true
 }

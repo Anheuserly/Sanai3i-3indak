@@ -37,3 +37,8 @@ next-env.d.ts
 .wrangler
 .open-next
 
+# Large Binaries / APKs (Enforces Cloudflare Workers 25 MiB asset limit)
+*.apk
+public/downloads/*.apk
+out/downloads/*.apk
+
