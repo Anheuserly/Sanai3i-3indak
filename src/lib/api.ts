@@ -70,7 +70,9 @@ export async function fetchWorkers(): Promise<Worker[]> {
     id: row.id,
     name: row.name,
     profession: row.profession,
+    professions: row.professions && row.professions.length > 0 ? row.professions : [row.profession],
     area: row.area,
+    phone: row.phone || '0599000000',
     rating: parseFloat(row.rating) || 5.0,
     ratingCount: row.reviewsCount || 100,
     completedJobs: row.completedJobs || 150,
@@ -78,6 +80,8 @@ export async function fetchWorkers(): Promise<Worker[]> {
     rankBadge: badges[idx] || '⭐ فني معتمد',
     experienceYears: 10 + (idx % 5),
     description: `فني معتمد ومحترف في نابلس، تقييم عالي مع ${row.completedJobs || 150} مهمة صيانة منجزة.`,
+    isVerified: row.isVerified ?? true,
+    isAvailable: row.isAvailable ?? true,
   }));
 }
 
@@ -110,12 +114,15 @@ export async function fetchOrders(): Promise<ServiceRequest[]> {
   return (json.data || []).map((row: any) => ({
     id: row.id,
     customerName: row.customerName,
+    customerPhone: row.customerPhone,
     profession: row.category,
     area: row.area,
     description: row.description,
     status: row.status,
     time: row.date || 'الآن',
     assignedWorkerName: row.workerName || undefined,
+    workerName: row.workerName || undefined,
+    workerId: row.workerId || undefined,
   }));
 }
 
@@ -125,6 +132,8 @@ export async function createOrder(data: {
   area: string;
   customerName?: string;
   customerPhone?: string;
+  workerName?: string;
+  workerId?: string;
 }): Promise<ServiceRequest> {
   const res = await fetch(`${API_BASE}/api/v1/orders`, {
     method: 'POST',
@@ -137,24 +146,28 @@ export async function createOrder(data: {
   return {
     id: row.id,
     customerName: row.customerName,
+    customerPhone: row.customerPhone,
     profession: row.category,
     area: row.area,
     description: row.description,
     status: row.status,
     time: row.date || 'الآن',
     assignedWorkerName: row.workerName || undefined,
+    workerName: row.workerName || undefined,
+    workerId: row.workerId || undefined,
   };
 }
 
 export async function updateOrderStatus(
   orderId: string,
   status: string,
-  workerName?: string
+  workerName?: string,
+  workerId?: string
 ): Promise<ServiceRequest> {
   const res = await fetch(`${API_BASE}/api/v1/orders/${orderId}/status`, {
     method: 'PATCH',
     headers: defaultHeaders,
-    body: JSON.stringify({ status, workerName }),
+    body: JSON.stringify({ status, workerName, workerId }),
   });
   if (!res.ok) throw new Error(`Failed to update order: ${res.status}`);
   const json = await res.json();
@@ -162,12 +175,15 @@ export async function updateOrderStatus(
   return {
     id: row.id,
     customerName: row.customerName,
+    customerPhone: row.customerPhone,
     profession: row.category,
     area: row.area,
     description: row.description,
     status: row.status,
     time: row.date || 'الآن',
     assignedWorkerName: row.workerName || undefined,
+    workerName: row.workerName || undefined,
+    workerId: row.workerId || undefined,
   };
 }
 
@@ -183,11 +199,16 @@ export async function fetchApplications(): Promise<WorkerApplication[]> {
     id: row.id,
     name: row.name,
     phone: row.phone,
+    email: row.email,
     profession: row.profession,
+    professions: row.professions && row.professions.length > 0 ? row.professions : (row.profession ? [row.profession] : []),
     experienceYears: row.experienceYears || 0,
     area: row.area,
+    addressDetails: row.addressDetails,
+    latitude: row.latitude ? parseFloat(row.latitude) : undefined,
+    longitude: row.longitude ? parseFloat(row.longitude) : undefined,
     description: row.description || '',
-    status: row.status || 'pending',
+    status: row.status || 'under_review',
   }));
 }
 
@@ -195,8 +216,11 @@ export async function createApplication(data: {
   name: string;
   phone: string;
   profession: string;
+  professions?: string[];
   experienceYears: number;
   area: string;
+  email?: string;
+  addressDetails?: string;
   description?: string;
 }): Promise<WorkerApplication> {
   const res = await fetch(`${API_BASE}/api/v1/applications`, {
@@ -211,15 +235,55 @@ export async function createApplication(data: {
     id: row.id,
     name: row.name,
     phone: row.phone,
+    email: row.email,
     profession: row.profession,
+    professions: row.professions && row.professions.length > 0 ? row.professions : [row.profession],
     experienceYears: row.experienceYears || 0,
     area: row.area,
+    addressDetails: row.addressDetails,
     description: row.description || '',
-    status: row.status || 'pending',
+    status: row.status || 'under_review',
   };
 }
 
+export async function approveApplication(
+  id: string,
+  details?: {
+    workerName?: string;
+    professions?: string[];
+    profession?: string;
+    phone?: string;
+    area?: string;
+    assignOrderId?: string;
+  }
+): Promise<boolean> {
+  const res = await fetch(`${API_BASE}/api/v1/applications/${id}/approve`, {
+    method: 'POST',
+    headers: defaultHeaders,
+    body: JSON.stringify(details || {}),
+  });
+  return res.ok;
+}
+
+export async function rejectApplication(
+  id: string,
+  reason?: string,
+  adminName?: string
+): Promise<boolean> {
+  const res = await fetch(`${API_BASE}/api/v1/applications/${id}/reject`, {
+    method: 'POST',
+    headers: defaultHeaders,
+    body: JSON.stringify({
+      reason: reason || 'معلومات غير مكتملة',
+      adminName: adminName || 'مالك المنصة (المؤسس)',
+    }),
+  });
+  return res.ok;
+}
+
 export async function updateApplicationStatus(id: string, status: string): Promise<boolean> {
+  if (status === 'approved') return approveApplication(id);
+  if (status === 'rejected') return rejectApplication(id);
   const res = await fetch(`${API_BASE}/api/v1/applications/${id}/status`, {
     method: 'PATCH',
     headers: defaultHeaders,

@@ -33,13 +33,24 @@ export const WorkerView: React.FC = () => {
   const [showFakeModal, setShowFakeModal] = useState(false);
   const [selectedFakeOrderId, setSelectedFakeOrderId] = useState<string>("");
 
-  const workerProfessions = activeWorker.professions || [activeWorker.profession];
+  const workerProfessions =
+    activeWorker.professions && activeWorker.professions.length > 0
+      ? activeWorker.professions
+      : [activeWorker.profession || "صنايعي عام"];
+
+  const isMyOrder = (o: ServiceRequest) =>
+    o.assignedWorkerName === activeWorker?.name ||
+    o.workerName === activeWorker?.name ||
+    (Boolean(activeWorker?.id) && o.assignedWorkerId === activeWorker.id) ||
+    (Boolean(activeWorker?.id) && o.workerId === activeWorker.id);
 
   // Orders in hand (claimed by or assigned to this worker)
   const myClaimedOrders = orders.filter(
     (o) =>
-      o.assignedWorkerName === activeWorker.name ||
-      (o.status !== "pending" && o.status !== "cancelled" && o.status !== "completed")
+      isMyOrder(o) &&
+      o.status !== "pending" &&
+      o.status !== "cancelled" &&
+      o.status !== "completed"
   );
 
   // Available new incoming requests (pending)
@@ -54,7 +65,11 @@ export const WorkerView: React.FC = () => {
   };
 
   const handleClaim = async (order: ServiceRequest) => {
-    if (!checkTradeMatch(order.profession)) {
+    const isDirectToMe =
+      order.workerName === activeWorker?.name ||
+      (Boolean(activeWorker?.id) && order.workerId === activeWorker.id);
+
+    if (!isDirectToMe && !checkTradeMatch(order.profession)) {
       alert(`عذراً، هذا الطلب (${order.profession}) يقع خارج تخصصاتك المعتمدة.`);
       return;
     }
@@ -343,27 +358,41 @@ export const WorkerView: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {availableOrders.map((req) => {
-              const isTradeMatch = checkTradeMatch(req.profession);
+              const isDirectToMe =
+                req.workerName === activeWorker?.name ||
+                (Boolean(activeWorker?.id) && req.workerId === activeWorker.id);
+              const isTradeMatch = isDirectToMe || checkTradeMatch(req.profession);
 
               return (
                 <div
                   key={req.id}
                   className={`bg-white rounded-3xl p-5 border transition-all space-y-4 ${
-                    isTradeMatch
+                    isDirectToMe
+                      ? "border-amber-400 bg-amber-50/20 shadow-md ring-2 ring-amber-400/20"
+                      : isTradeMatch
                       ? "border-emerald-300 shadow-sm hover:border-emerald-500"
                       : "border-slate-200 opacity-75 bg-slate-50/60"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span
-                      className={`text-xs font-black px-2.5 py-1 rounded-full ${
-                        isTradeMatch
-                          ? "bg-emerald-100 text-emerald-800"
-                          : "bg-slate-200 text-slate-600"
-                      }`}
-                    >
-                      {req.profession}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-xs font-black px-2.5 py-1 rounded-full ${
+                          isDirectToMe
+                            ? "bg-amber-100 text-amber-900 font-black"
+                            : isTradeMatch
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-slate-200 text-slate-600"
+                        }`}
+                      >
+                        {req.profession}
+                      </span>
+                      {isDirectToMe && (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500 text-white">
+                          ✨ طلب مباشر لك
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[11px] font-bold text-slate-400">
                       📍 {req.area} • {req.time}
                     </span>
@@ -384,9 +413,17 @@ export const WorkerView: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => handleClaim(req)}
-                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5"
+                          className={`flex-1 font-black text-xs py-3 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 ${
+                            isDirectToMe
+                              ? "bg-amber-600 hover:bg-amber-700 text-white"
+                              : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                          }`}
                         >
-                          <span>🤝 قبول الطلب وضمه لحوزتي</span>
+                          <span>
+                            {isDirectToMe
+                              ? "🤝 قبول الطلب الموجه لك وبدء تنفيذه"
+                              : "🤝 قبول الطلب وضمه لحوزتي"}
+                          </span>
                         </button>
                       </div>
                     ) : (

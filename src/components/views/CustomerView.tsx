@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useApp } from "@/context/AppContext";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { LeaderboardWorkers } from "@/components/LeaderboardWorkers";
@@ -18,7 +19,13 @@ import {
   Lightbulb,
   Bug,
   HardHat,
+  Star,
+  Phone,
+  CheckCircle,
+  Check,
+  X,
 } from "lucide-react";
+import { Worker } from "@/types";
 
 export const CustomerView: React.FC = () => {
   const {
@@ -30,8 +37,36 @@ export const CustomerView: React.FC = () => {
     workersList,
     topCustomers,
     orders,
+    categories,
+    areas,
   } = useApp();
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Craftsmen Directory Filter States
+  const [directorySearch, setDirectorySearch] = useState("");
+  const [selectedTrade, setSelectedTrade] = useState("all");
+  const [selectedArea, setSelectedArea] = useState("all");
+
+  const filteredDirectoryWorkers = workersList.filter((w) => {
+    const matchesSearch =
+      directorySearch.trim() === "" ||
+      w.name.toLowerCase().includes(directorySearch.toLowerCase()) ||
+      w.profession.toLowerCase().includes(directorySearch.toLowerCase()) ||
+      (w.professions && w.professions.some((p) => p.toLowerCase().includes(directorySearch.toLowerCase()))) ||
+      w.area.toLowerCase().includes(directorySearch.toLowerCase()) ||
+      (w.phone && w.phone.includes(directorySearch));
+
+    const matchesTrade =
+      selectedTrade === "all" ||
+      w.profession === selectedTrade ||
+      (w.professions && w.professions.includes(selectedTrade));
+
+    const matchesArea =
+      selectedArea === "all" ||
+      w.area.toLowerCase().includes(selectedArea.toLowerCase());
+
+    return matchesSearch && matchesTrade && matchesArea;
+  });
 
   const handleHeroSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -182,6 +217,208 @@ export const CustomerView: React.FC = () => {
       <div id="categories">
         <CategoryGrid />
       </div>
+
+      {/* Certified Craftsmen Directory & Direct Booking Section */}
+      <section id="craftsmen" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-black mb-1">
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+                <span>فنيون معتمدون ومفحوصون في نابلس</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                دليل الصنائعية المعتمدين في نابلس ({workersList.length})
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
+                تصفح الصنائعية المعتمدين في حيك، اتصل مباشرة بالفني أو اطلب الخدمة فورياً بدون أي عمولة أو وسيط.
+              </p>
+            </div>
+
+            <button
+              onClick={() => {
+                setSelectedTrade("all");
+                setSelectedArea("all");
+                setDirectorySearch("");
+              }}
+              className="text-xs font-bold text-slate-500 hover:text-primary transition-colors self-start md:self-auto"
+            >
+              إعادة ضبط الفلاتر ⟲
+            </button>
+          </div>
+
+          {/* Search Bar & Area / Trade Filters */}
+          <div className="space-y-3">
+            <div className="relative w-full">
+              <Search className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={directorySearch}
+                onChange={(e) => setDirectorySearch(e.target.value)}
+                placeholder="ابحث عن صنايعي بالاسم، التخصص، رقم الهاتف، أو اسم الحي في نابلس..."
+                className="w-full text-xs font-bold pl-3 pr-10 py-3 rounded-2xl border border-slate-200 bg-slate-50 outline-none focus:border-primary focus:bg-white transition-all shadow-xs"
+              />
+              {directorySearch && (
+                <button
+                  onClick={() => setDirectorySearch("")}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* Quick Filter Chips: Trade & Area */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              {/* Category / Trade Select */}
+              <div className="flex-1">
+                <label className="block text-[11px] font-black text-slate-500 mb-1">
+                  المهنة المطلوبة:
+                </label>
+                <select
+                  value={selectedTrade}
+                  onChange={(e) => setSelectedTrade(e.target.value)}
+                  className="w-full text-xs font-bold p-2.5 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:border-primary focus:bg-white"
+                >
+                  <option value="all">جميع المهن ({categories.length} مهنة)</option>
+                  {categories.map((c) => (
+                    <option key={c.id} value={c.name}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Area Select */}
+              <div className="flex-1">
+                <label className="block text-[11px] font-black text-slate-500 mb-1">
+                  الحي داخل نابلس:
+                </label>
+                <select
+                  value={selectedArea}
+                  onChange={(e) => setSelectedArea(e.target.value)}
+                  className="w-full text-xs font-bold p-2.5 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:border-primary focus:bg-white"
+                >
+                  <option value="all">كافة مناطق وأحياء نابلس</option>
+                  {areas.map((a) => (
+                    <option key={a} value={a}>
+                      📍 نابلس — {a}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Directory Grid */}
+          {filteredDirectoryWorkers.length === 0 ? (
+            <div className="py-12 text-center text-slate-400 text-xs font-bold bg-slate-50 rounded-2xl border border-slate-100">
+              لا يوجد صنايعية مطابقين لبحثك حالياً. جرب اختيار مهنة أو منطقة أخرى.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredDirectoryWorkers.map((worker) => (
+                <div
+                  key={worker.id}
+                  className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200 hover:border-emerald-300 hover:bg-white hover:shadow-lg transition-all flex flex-col justify-between gap-4 group"
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <Image
+                            src={worker.photo}
+                            alt={worker.name}
+                            width={54}
+                            height={54}
+                            className="w-13 h-13 rounded-2xl object-cover border-2 border-white shadow-xs group-hover:scale-105 transition-transform"
+                          />
+                          <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white rounded-full p-0.5 border-2 border-white">
+                            <CheckCircle className="w-3.5 h-3.5" />
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <h4 className="font-black text-sm text-slate-900">
+                              {worker.name}
+                            </h4>
+                          </div>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200 mt-1 inline-block">
+                            {worker.rankBadge || "صنايعي معتمد"}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span
+                        className={`text-[10px] font-black px-2.5 py-0.5 rounded-full ${
+                          worker.isAvailable !== false
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-slate-200 text-slate-600"
+                        }`}
+                      >
+                        {worker.isAvailable !== false ? "● متاح الآن" : "غير متاح"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3 text-xs text-slate-600 font-semibold mt-3.5">
+                      <div className="flex items-center gap-1 text-amber-600 font-black">
+                        <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                        <span>{worker.rating.toFixed(2)}</span>
+                      </div>
+                      <span>•</span>
+                      <span>{worker.completedJobs} طلب منجز</span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1 text-slate-500">
+                        <MapPin className="w-3 h-3 text-slate-400" />
+                        {worker.area}
+                      </span>
+                    </div>
+
+                    {/* Trade Badges */}
+                    <div className="flex flex-wrap gap-1 mt-3">
+                      {(worker.professions && worker.professions.length > 0
+                        ? worker.professions
+                        : [worker.profession]
+                      ).map((p, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 text-[11px] font-bold border border-purple-200"
+                        >
+                          🛠️ {p}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Actions: Direct Call & Instant Booking */}
+                  <div className="pt-3 border-t border-slate-200/60 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => openResponsibilityModal(worker)}
+                      className="flex-1 bg-primary hover:bg-primary-dark text-white text-xs font-black py-2.5 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5"
+                    >
+                      <span>طلب فوري لهذا الفني</span>
+                      <span>➔</span>
+                    </button>
+
+                    {worker.phone && (
+                      <a
+                        href={`tel:${worker.phone}`}
+                        className="px-3.5 py-2.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs font-black flex items-center gap-1 transition-all"
+                        title="اتصال هاتفي مباشر"
+                      >
+                        <Phone className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">اتصال</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Suggest / Report Bug / Report Worker / Apply Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

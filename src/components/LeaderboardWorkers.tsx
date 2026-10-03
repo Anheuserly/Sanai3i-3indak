@@ -4,13 +4,14 @@ import React from "react";
 import Image from "next/image";
 import { useApp } from "@/context/AppContext";
 import { Star, ShieldCheck, MapPin } from "lucide-react";
+import { Worker } from "@/types";
 
 export const LeaderboardWorkers: React.FC = () => {
   const { workersList, openResponsibilityModal, setSelectedCategory } = useApp();
 
-  const handleRequestWorker = (profession: string) => {
-    setSelectedCategory(profession);
-    openResponsibilityModal();
+  const handleRequestWorker = (worker: Worker) => {
+    setSelectedCategory(worker.profession);
+    openResponsibilityModal(worker);
   };
 
   if (!workersList || workersList.length === 0) {
@@ -86,7 +87,7 @@ export const LeaderboardWorkers: React.FC = () => {
               </div>
 
               <button
-                onClick={() => handleRequestWorker(worker.profession)}
+                onClick={() => handleRequestWorker(worker)}
                 className="bg-primary hover:bg-primary-dark text-white text-xs font-black px-4 py-2 rounded-xl transition-all shadow-xs"
               >
                 طلب الخدمة

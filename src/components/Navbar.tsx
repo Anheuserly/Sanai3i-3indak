@@ -104,6 +104,9 @@ export const Navbar: React.FC = () => {
             <Link href="/#categories" className="hover:text-primary transition-colors">
               المهن الـ 19
             </Link>
+            <Link href="/#craftsmen" className="hover:text-primary transition-colors text-emerald-700 font-black">
+              دليل الصنائعية
+            </Link>
             <Link href="/#leaderboard" className="hover:text-primary transition-colors">
               أفضل الصنائعية
             </Link>
@@ -146,7 +149,7 @@ export const Navbar: React.FC = () => {
 
             {/* Request Worker CTA */}
             <button
-              onClick={openResponsibilityModal}
+              onClick={() => openResponsibilityModal()}
               className="bg-accent hover:bg-accent-dark text-slate-950 font-black px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition-all hover:scale-105 flex items-center gap-1.5"
             >
               <span>⚡</span>

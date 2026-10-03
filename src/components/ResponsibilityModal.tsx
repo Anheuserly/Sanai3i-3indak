@@ -13,6 +13,8 @@ export const ResponsibilityModal: React.FC = () => {
     submitNewRequest,
     categories,
     areas,
+    preferredWorker,
+    setPreferredWorker,
   } = useApp();
 
   const [description, setDescription] = useState<string>(
@@ -70,12 +72,51 @@ export const ResponsibilityModal: React.FC = () => {
                 طلب مجاني تماماً من التطبيق
               </div>
               <h2 className="text-2xl font-black text-slate-900">
-                طلب صنايعي في نابلس
+                {preferredWorker ? `طلب فوري: ${preferredWorker.name}` : "طلب صنايعي في نابلس"}
               </h2>
               <p className="text-slate-500 text-xs mt-1">
-                حدد المهنة والمشكلة وسيتواصل معك أقرب فني متاح في منطقتك.
+                {preferredWorker
+                  ? `يتم توجيه هذا الطلب بشكل مباشر للفني ${preferredWorker.name} (${preferredWorker.profession}) في نابلس.`
+                  : "حدد المهنة والمشكلة وسيتواصل معك أقرب فني متاح في منطقتك."}
               </p>
             </div>
+
+            {/* Preferred Worker Direct Request Banner */}
+            {preferredWorker && (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between gap-3 animate-in fade-in">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black flex items-center justify-center text-sm shadow-xs">
+                    🛠️
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-black text-emerald-900">
+                        طلب مباشر وموجه للفني:
+                      </span>
+                      <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                        {preferredWorker.name}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-emerald-700 font-semibold mt-0.5">
+                      {preferredWorker.professions?.join("، ") || preferredWorker.profession} • 📍 {preferredWorker.area} • ⭐ {preferredWorker.rating.toFixed(2)}
+                      {preferredWorker.phone && (
+                        <span className="mr-2 text-emerald-800 font-mono">
+                          📞 {preferredWorker.phone}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPreferredWorker(null)}
+                  className="text-[11px] font-bold text-slate-500 hover:text-red-600 px-2 py-1 rounded-lg hover:bg-white transition-colors"
+                  title="العودة لطلب عام لجميع الصنائعية"
+                >
+                  إلغاء التوجيه المباشر
+                </button>
+              </div>
+            )}
 
             {/* Category Picker */}
             <div>
@@ -161,7 +202,11 @@ export const ResponsibilityModal: React.FC = () => {
                   : "bg-slate-200 text-slate-400 cursor-not-allowed"
               }`}
             >
-              <span>تأكيد ونشر الطلب مجاناً في نابلس</span>
+              <span>
+                {preferredWorker
+                  ? `تأكيد وإرسال الطلب المباشر لـ ${preferredWorker.name}`
+                  : "تأكيد ونشر الطلب مجاناً في نابلس"}
+              </span>
               <span>➔</span>
             </button>
           </form>

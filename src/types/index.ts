@@ -21,6 +21,9 @@ export interface Worker {
   rankBadge: string;
   experienceYears: number;
   description: string;
+  phone?: string;
+  isVerified?: boolean;
+  isAvailable?: boolean;
 }
 
 export interface TopCustomer {
@@ -34,24 +37,32 @@ export interface TopCustomer {
 export interface ServiceRequest {
   id: string;
   customerName: string;
+  customerPhone?: string;
   profession: string;
   area: string;
   description: string;
   status: 'pending' | 'accepted' | 'worker_on_way' | 'in_progress' | 'completed' | 'cancelled' | 'disputed';
   time: string;
   assignedWorkerName?: string;
+  assignedWorkerId?: string;
+  workerName?: string;
+  workerId?: string;
 }
 
 export interface WorkerApplication {
   id: string;
   name: string;
   phone: string;
+  email?: string;
   profession: string;
   professions?: string[];
   experienceYears: number;
   area: string;
+  addressDetails?: string;
+  latitude?: number;
+  longitude?: number;
   description: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'approved' | 'rejected' | 'under_review';
 }
 
 export interface FakeReport {
